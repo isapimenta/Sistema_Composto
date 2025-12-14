@@ -1,0 +1,192 @@
+# Books Frontend - Biblioteca Online
+
+Interface web moderna desenvolvida em React para gerenciamento de livros e avaliações, com integração à Open Library API.
+
+## Descrição
+
+Este frontend oferece uma experiência completa para gerenciar sua biblioteca pessoal de livros. Você pode:
+- Visualizar e gerenciar sua coleção de livros
+- Buscar novos livros na Open Library API (serviço externo)
+- Adicionar, editar e remover livros
+- Criar e visualizar avaliações
+- Importar livros diretamente da API externa para sua coleção
+
+## Tecnologias
+
+- React 18
+- JavaScript ES6+
+- CSS3 (com gradientes e animações)
+- Nginx (para produção)
+- Docker
+
+## Instalação
+
+### Opção 1: Executar com Docker (Recomendado)
+
+1. Clone o repositório:
+```bash
+git clone <seu-repositorio>
+cd books-frontend
+```
+
+2. Certifique-se de que a API está rodando em `http://localhost:5000`
+
+3. Construa a imagem Docker:
+```bash
+docker build -t books-frontend .
+```
+
+4. Execute o container:
+```bash
+docker run -p 80:80 books-frontend
+```
+
+A aplicação estará disponível em: `http://localhost`
+
+### Opção 2: Executar em modo desenvolvimento
+
+1. Clone o repositório:
+```bash
+git clone <seu-repositorio>
+cd books-frontend
+```
+
+2. Instale as dependências:
+```bash
+npm install
+```
+
+3. Inicie o servidor de desenvolvimento:
+```bash
+npm start
+```
+
+A aplicação abrirá automaticamente em: `http://localhost:3000`
+
+## Funcionalidades
+
+### 1. Minha Coleção (GET, PUT, DELETE)
+- **GET**: Visualiza todos os livros cadastrados na sua API
+- **GET**: Clique em um livro para ver detalhes e avaliações
+- **PUT**: Edite informações de um livro
+- **DELETE**: Remova livros da coleção
+
+### 2. Buscar Livros - API Externa (GET)
+- **GET**: Busca livros na Open Library API (https://openlibrary.org)
+- Visualiza informações detalhadas de livros públicos
+- Importa livros para sua coleção com um clique (**POST** na sua API)
+
+### 3. Adicionar Livro (POST)
+- **POST**: Cria novos livros manualmente na sua API
+- Formulário completo com título, autor, ISBN, descrição e URL da capa
+
+### 4. Sistema de Avaliações (POST)
+- **POST**: Adiciona avaliações aos livros
+- Sistema de 1 a 5 estrelas
+- Comentários opcionais
+
+## APIs Utilizadas
+
+### API Interna (Books API)
+- **Base URL**: `http://localhost:5000/api`
+- **Rotas utilizadas**:
+  - `GET /books` - Lista todos os livros
+  - `GET /books/<id>` - Busca livro específico
+  - `POST /books` - Cria novo livro
+  - `PUT /books/<id>` - Atualiza livro
+  - `DELETE /books/<id>` - Remove livro
+  - `POST /books/<id>/reviews` - Adiciona avaliação
+
+### API Externa - Open Library
+- **Base URL**: `https://openlibrary.org/search.json`
+- **Licença**: Domínio Público (Open Data Commons)
+- **Cadastro**: Não é necessário
+- **Rota utilizada**: `GET /search.json?q=<query>&limit=10`
+- **Documentação**: https://openlibrary.org/developers/api
+
+A Open Library é um projeto da Internet Archive que fornece acesso gratuito a milhões de livros. A API não requer autenticação e é totalmente gratuita.
+
+## Design e Interface
+
+- Interface moderna com gradientes coloridos
+- Animações suaves em hover e transições
+- Cards responsivos para exibição de livros
+- Modal elegante para detalhes dos livros
+- Sistema de tabs para navegação intuitiva
+- Feedback visual para todas as ações
+
+## Estrutura do Projeto
+
+```
+books-frontend/
+├── public/
+│   └── index.html
+├── src/
+│   ├── App.jsx          # Componente principal
+│   ├── App.css          # Estilos
+│   └── index.js         # Entry point
+├── Dockerfile           # Configuração Docker
+├── nginx.conf           # Configuração Nginx
+├── package.json         # Dependências
+└── README.md            # Documentação
+```
+
+## Docker
+
+O Dockerfile utiliza multi-stage build:
+1. **Build Stage**: Compila a aplicação React
+2. **Production Stage**: Serve os arquivos estáticos com Nginx
+
+Benefícios:
+- Imagem final leve (apenas nginx + build)
+- Otimizado para produção
+- Cache de assets estáticos
+
+## Métodos HTTP Implementados
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/books` | Lista todos os livros |
+| GET | `/api/books/<id>` | Busca livro específico |
+| POST | `/api/books` | Cria novo livro |
+| PUT | `/api/books/<id>` | Atualiza livro |
+| DELETE | `/api/books/<id>` | Remove livro |
+| POST | `/api/books/<id>/reviews` | Adiciona avaliação |
+| GET | Open Library API | Busca livros externos |
+
+## Uso da Aplicação
+
+1. **Visualizar Livros**: Acesse a aba "Meus Livros" para ver sua coleção
+2. **Buscar Externos**: Vá para "Buscar Livros" e pesquise na Open Library
+3. **Adicionar Manualmente**: Use "Adicionar Livro" para criar novos registros
+4. **Avaliar**: Clique em qualquer livro e adicione sua avaliação
+5. **Gerenciar**: Edite ou delete livros conforme necessário
+
+## Observações Importantes
+
+- A API backend deve estar rodando antes de iniciar o frontend
+- Certifique-se de que o CORS está habilitado na API
+- Para produção, altere `API_URL` no código para o domínio correto
+- O Nginx serve a aplicação na porta 80
+
+## Comandos Úteis
+
+```bash
+# Desenvolvimento
+npm start           # Inicia em modo dev
+npm run build       # Cria build de produção
+npm test            # Executa testes
+
+# Docker
+docker build -t books-frontend .
+docker run -p 80:80 books-frontend
+docker ps           # Lista containers rodando
+docker logs <id>    # Ver logs do container
+```
+
+## Responsividade
+
+A aplicação é totalmente responsiva e se adapta a diferentes tamanhos de tela:
+- Desktop: Grid de 4-5 colunas
+- Tablet: Grid de 2-3 colunas
+- Mobile: Grid de 1-2 colunas
