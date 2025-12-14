@@ -1,0 +1,47 @@
+## Instalação
+
+### Opção 1: Executar com Docker (Recomendado)
+
+1. Clone o repositório:
+```bash
+git clone <seu-repositorio>
+cd books-api
+```
+
+2. Construa a imagem Docker:
+```bash
+docker build -t books-api .
+```
+
+3. Execute o container:
+```bash
+docker run -p 5000:5000 books-api
+```
+
+A API estará disponível em: `http://localhost:5000`
+
+### Opção 2: Executar localmente
+
+1. Clone o repositório:
+```bash
+git clone <seu-repositorio>
+cd books-api
+```
+
+2. Crie um ambiente virtual:
+```bash
+python -m venv venv
+source venv/bin/activate  # No Windows: venv\Scripts\activate
+```
+
+3. Instale as dependências:
+```bash
+pip install -r requirements.txt
+```
+
+4. Execute a aplicação:
+```bash
+python app.py
+```
+
+A API estará disponível em: `http://localhost:5000`
