@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  # API Backend
+  api:
+    build: ./books-api
+    container_name: books-api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./books-api:/app
+      - db-data:/app/instance
+    environment:
+      - FLASK_ENV=development
+    networks:
+      - books-network
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build: ./books-frontend
+    container_name: books-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - books-network
+    restart: unless-stopped
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  books-network:
+    driver: bridge
